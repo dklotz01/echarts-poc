@@ -1,0 +1,11 @@
+{
+  "name": "echarts-experiment",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "concurrently \"cd backend && node index.js\" \"cd frontend && npm run dev\""
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "concurrently": "^7.2.2"
+  }
+}
