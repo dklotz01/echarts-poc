@@ -4,6 +4,7 @@ import { pizzaSalesData, Pizza } from '../data/pizzaSales';
 import { format, parse } from 'date-fns';
 import { PizzaSelector } from './PizzaSelector';
 import { DateSelector } from './DateSelector';
+import { Download } from 'lucide-react';
 
 interface ServerSideChartProps {
 }
@@ -88,6 +89,21 @@ export const ServerSideChart = () => {
       });
   }, [filteredData]);
 
+  const handleGeneratePdf = () => {
+    axios.post('http://localhost:3000/generate-pdf', filteredData, { responseType: 'blob' })
+      .then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'chart.pdf';
+        a.click();
+        window.URL.revokeObjectURL(url);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   return (
     <div>
       <DateSelector
@@ -102,6 +118,13 @@ export const ServerSideChart = () => {
         onTogglePizza={handleTogglePizza}
         onColorChange={handleColorChange}
       />
+      <button 
+        onClick={handleGeneratePdf} 
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        <Download size={20} className="mr-2" />
+        Generate PDF
+      </button>
       <div dangerouslySetInnerHTML={{ __html: svg }} />
     </div>
   );
