@@ -19,6 +19,10 @@ export const PieChart = ({ data }: PieChartProps) => {
           },
         ],
       });
+      chart.on('click', (params) => {
+        console.log(params.name)
+        window.open("https://www.google.com/search?q=" + params.name);
+      });
     }
   }, [data]);
 
